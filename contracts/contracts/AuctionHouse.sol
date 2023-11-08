@@ -10,6 +10,7 @@ contract AuctionHouse {
 
     struct Auction {
         address seller;
+        address itemContract;
         uint itemId;
         uint startingPrice;
         uint endTime;
@@ -18,7 +19,6 @@ contract AuctionHouse {
     }
 
     IERC20 public auctionToken;
-    IERC721 public auctionItem;
     uint public feePercentage = 250;
     address public admin;
     address[] public managers;
@@ -56,7 +56,8 @@ contract AuctionHouse {
         _;
     }
 
-    function startAuction(uint itemId, uint startingPrice, uint duration) external {
+    function startAuction(address itemContract, uint itemId, uint startingPrice, uint duration) external {
+        IERC721 auctionItem = IERC721(itemContract);
         require(msg.sender == auctionItem.ownerOf(itemId), "You don't own the item");
         require(startingPrice > 0, "Starting price must be greater than 0");
         
@@ -65,6 +66,7 @@ contract AuctionHouse {
         
         auctions[auctionId] = Auction({
             seller: msg.sender,
+            itemContract: itemContract,
             itemId: itemId,
             startingPrice: startingPrice,
             endTime: endTime,
@@ -81,6 +83,7 @@ contract AuctionHouse {
         require(msg.sender == auction.seller, "You are not the seller");
         require(block.timestamp < auction.endTime, "Auction has ended");
         
+        IERC721 auctionItem = IERC721(auction.itemContract);
         auctionItem.transferFrom(address(this), auction.seller, auction.itemId);
         emit AuctionCancelled(auctionId);
         delete auctions[auctionId];
@@ -95,6 +98,7 @@ contract AuctionHouse {
         uint fee = (winningBid * feePercentage) / 10000;
         uint sellerProceeds = winningBid - fee;
         
+        IERC721 auctionItem = IERC721(auction.itemContract);
         auctionItem.transferFrom(address(this), winner, auction.itemId);
         auctionToken.transfer(auction.seller, sellerProceeds);
         
@@ -132,6 +136,7 @@ contract AuctionHouse {
         require(block.timestamp >= auction.endTime, "Auction has not ended yet");
         require(msg.sender == auction.currentBidder, "You are not the highest bidder");
         
+        IERC721 auctionItem = IERC721(auction.itemContract);
         auctionItem.transferFrom(address(this), msg.sender, auction.itemId);
         auctionToken.transfer(auction.seller, auction.currentBid);
         emit ItemClaimed(auctionId);
