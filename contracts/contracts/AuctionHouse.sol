@@ -31,9 +31,9 @@ contract AuctionHouse {
     event BidPlaced(uint auctionId, address bidder, uint amount);
     event ItemClaimed(uint auctionId);
 
-    constructor(address _auctionToken) {
+    constructor(address _auctionToken, address initialAdmin) {
         auctionToken = IERC20(_auctionToken);
-        admin = msg.sender;
+        admin = initialAdmin;
     }
 
     modifier isAdmin() {
@@ -42,7 +42,7 @@ contract AuctionHouse {
     }
 
     modifier isAdminOrManager() {
-        require(msg.sender == admin || isManager(msg.sender), "Not a admin or manager");
+        require(msg.sender == admin || isManager(msg.sender), "Not an admin or manager");
         _;
     }
 
