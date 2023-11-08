@@ -16,10 +16,13 @@ contract AuctionItem is ERC721, ERC721URIStorage, Ownable {
         Ownable(initialOwner)
     {}
 
+    event ItemMinted(address indexed to, uint256 indexed tokenId);
+
     function safeMint(address to, string memory uri) public onlyOwner {
         uint256 tokenId = _nextTokenId++;
         _safeMint(to, tokenId);
         _setTokenURI(tokenId, uri);
+        emit ItemMinted(to, tokenId);
     }
 
     // The following functions are overrides required by Solidity.
