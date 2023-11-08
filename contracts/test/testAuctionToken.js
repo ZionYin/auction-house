@@ -1,5 +1,4 @@
-const { loadFixture } = require("ethereum-waffle");
-const { ethers } = require("hardhat");
+const { loadFixture } = require("@nomicfoundation/hardhat-toolbox/network-helpers");
 const { expect } = require("chai");
 
 describe("Token contract", function () {
@@ -10,12 +9,12 @@ describe("Token contract", function () {
     }
     it("Should allow owner to mint", async function () {
         const { token, owner } = await loadFixture(deployFixture);
-        await token.mint(owner.address, 100);
+        await token.mint(100);
         expect(await token.balanceOf(owner.address)).to.equal(100);
     });
     it("Should allow anyone to mint", async function () {
         const { token, addr1 } = await loadFixture(deployFixture);
-        await token.mint(addr1.address, 200);
-        expect(await token.balanceOf(addr1.address)).to.equal(100);
+        await token.connect(addr1).mint(200);
+        expect(await token.balanceOf(addr1.address)).to.equal(200);
     });
 });
