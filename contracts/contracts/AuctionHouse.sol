@@ -58,14 +58,16 @@ contract AuctionHouse {
 
     function startAuction(address itemContract, uint itemId, uint startingPrice, uint duration) external {
         IERC721 auctionItem = IERC721(itemContract);
-        require(msg.sender == auctionItem.ownerOf(itemId), "You don't own the item");
+        require(tx.origin == auctionItem.ownerOf(itemId), "You don't own the item");
         require(startingPrice > 0, "Starting price must be greater than 0");
+
+        auctionItem.transferFrom(tx.origin, address(this), itemId);
         
         uint auctionId = _nextAuctionId++;
         uint endTime = block.timestamp + duration;
         
         auctions[auctionId] = Auction({
-            seller: msg.sender,
+            seller: tx.origin,
             itemContract: itemContract,
             itemId: itemId,
             startingPrice: startingPrice,
@@ -74,7 +76,7 @@ contract AuctionHouse {
             currentBidder: address(0)
         });
         
-        auctionItem.transferFrom(msg.sender, address(this), itemId);
+        
         emit AuctionStarted(auctionId, itemId, startingPrice, endTime);
     }
 

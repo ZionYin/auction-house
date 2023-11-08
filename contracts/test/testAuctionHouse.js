@@ -1,6 +1,6 @@
 const { loadFixture } = require("@nomicfoundation/hardhat-toolbox/network-helpers");
 const { expect } = require("chai");
-// const { anyValue } = require("@nomicfoundation/hardhat-chai-matchers/withArgs")
+const { anyValue } = require("@nomicfoundation/hardhat-chai-matchers/withArgs")
 
 const uri1 = "ipfs://bafybeibqv73fvudnhmjvo7leuvu7oka2ig3igseawfhchtn4yg65mxdu3y";
 const uri2 = "ipfs://bafybeif6qxkq3kxlm4ml5p5j6umbi2cn5yznt3yb3iaiimicvat5tqbawm";
@@ -66,38 +66,23 @@ describe("AuctionHouse contract unit test", function () {
 
 // use root hooks to setup accounts and share states between tests
 describe("AuctionHouse contract workflow tests", function () {
-    // let owner, user1, user2, user3;
-    // let token, item, house;
-
-    // before(async function () {
-    //     [owner, user1, user2, user3] = await ethers.getSigners();
-    //     token = await ethers.deployContract("AuctionToken");
-    //     await token.waitForDeployment();
-    //     item = await ethers.deployContract("AuctionItem", [user1.address, "Test1", "TEST1"]);
-    //     house = await ethers.deployContract("AuctionHouse", [token.target, owner.address]);
-    // });
-    
-    it("Should allow user to create an auction", async function () {
-        let owner, user1, user2, user3;
+    let owner, user1, user2, user3;
     let token, item, house;
 
-    [owner, user1, user2, user3] = await ethers.getSigners();
+    before(async function () {
+        [owner, user1, user2, user3] = await ethers.getSigners();
         token = await ethers.deployContract("AuctionToken");
         await token.waitForDeployment();
         item = await ethers.deployContract("AuctionItem", [user1.address, "Test1", "TEST1"]);
         house = await ethers.deployContract("AuctionHouse", [token.target, owner.address]);
-
-
-
+    });
+    
+    it("Should allow user to create an auction", async function () {
         item.connect(user1).safeMint(user1.address, uri1);
-        // await item.connect(user1).setApprovalForAll(house.target, true);
-        console.log("result is:");
-        const result = await house.connect(user1).startAuction(0, 100, 1000);
-        console.log(result);
-        // await expect(house.connect(user1).startAuction(0, 100, 1000))
-        // .to.emit(house, "AuctionStarted")
-        // .withArgs(0, 0, 100, 100);
-
+        await item.connect(user1).setApprovalForAll(house.target, true);
+        await expect(house.connect(user1).startAuction(item.target, 0, 100, 1000))
+        .to.emit(house, "AuctionStarted")
+        .withArgs(0, 0, 100, anyValue);
     });
 
 });
