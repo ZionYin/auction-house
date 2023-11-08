@@ -6,6 +6,10 @@ async function main() {
   const token = await ethers.deployContract("AuctionToken");
 
   console.log("Token address:", await token.getAddress());
+
+  const auction = await ethers.deployContract("Auction", [token.address]);
+
+  console.log("Auction address:", await auction.getAddress());
 }
 
 main()

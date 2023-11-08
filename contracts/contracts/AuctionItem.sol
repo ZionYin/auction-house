@@ -5,6 +5,9 @@ import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
+/// @title An ERC721 token for creating auction items
+/// @author Zion
+/// @notice You can use this contract to create ERC721 tokens for auctioning
 contract AuctionItem is ERC721, ERC721URIStorage, Ownable {
     uint256 private _nextTokenId;
 
