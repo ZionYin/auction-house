@@ -37,4 +37,14 @@ describe("AuctionItem contract unit tests", function () {
         await item.safeTransferFrom(owner.address, user1.address, 0);
         expect(await item.ownerOf(0)).to.equal(user1.address);
     });
+    it("Should show the correct URI of a NFT", async function () {
+        const { item, owner } = await loadFixture(deployFixture);
+        await item.safeMint(owner.address, uri1);
+        expect(await item.tokenURI(0)).to.equal(uri1);
+    });
+    it("Should show the correct supportsInterface", async function () {
+        const { item, owner } = await loadFixture(deployFixture);
+        expect(await item.supportsInterface("0x5b5e139f")).to.equal(true); // interface id for erc721
+        expect(await item.supportsInterface("0x780e9d63")).to.equal(false); // interface id for erc721Enumerable
+    });
 });
