@@ -31,13 +31,21 @@ describe("AuctionHouse contract unit tests", function () {
             await expect(house.connect(user1).setFeePercentage(100))
             .to.be.revertedWith("Not an admin or manager");
         });
+        it("Should not allow fee to be higher than 100%", async function () {
+            const { house, owner } = await loadFixture(deployFixture);
+            await expect(house.setFeePercentage(20000))
+            .to.be.revertedWith("Invalid fee percentage");
+        });
     });
 
     describe("AuctionHouse admin tests", function () {   
-        it("Should allow admin to add manager", async function () {
-            const { house, owner, user1 } = await loadFixture(deployFixture);
+        it("Should allow admin to add managers", async function () {
+            const { house, owner, user1, user2, user3 } = await loadFixture(deployFixture);
             await house.addManager(user1.address);
+            await house.addManager(user2.address);
             expect(await house.isManager(user1.address)).to.equal(true);
+            expect(await house.isManager(user2.address)).to.equal(true);
+            expect(await house.isManager(user3.address)).to.equal(false);
         });
         it("Should not allow non-admin to add manager", async function () {
             const { house, owner, user1, user2 } = await loadFixture(deployFixture);
@@ -45,10 +53,18 @@ describe("AuctionHouse contract unit tests", function () {
             .to.be.revertedWith("Not an admin");
         });
         it("Should allow admin to remove manager", async function () {
-            const { house, owner, user1 } = await loadFixture(deployFixture);
+            const { house, owner, user1, user2 } = await loadFixture(deployFixture);
             await house.addManager(user1.address);
-            await house.removeManager(user1.address);
-            expect(await house.isManager(user1.address)).to.equal(false);
+            await house.addManager(user2.address);
+            await house.removeManager(user2.address);
+            expect(await house.isManager(user1.address)).to.equal(true);
+            expect(await house.isManager(user2.address)).to.equal(false);
+        });
+        it("Should not allow admin to add manager twice", async function () {
+            const { house, owner, user1, user2 } = await loadFixture(deployFixture);
+            await house.addManager(user1.address);
+            await expect(house.addManager(user1.address))
+            .to.be.revertedWith("Address is already a manager");
         });
         it("Should not allow non-admin to remove manager", async function () {
             const { house, owner, user1, user2 } = await loadFixture(deployFixture);
@@ -60,6 +76,11 @@ describe("AuctionHouse contract unit tests", function () {
             const { house, owner, user1 } = await loadFixture(deployFixture);
             await house.changeAdmin(user1.address);
             expect(await house.admin()).to.equal(user1.address);
+        });
+        it("Should not allow non-admin to change admin", async function () {
+            const { house, owner, user1, user2 } = await loadFixture(deployFixture);
+            await expect(house.connect(user1).changeAdmin(user2.address))
+            .to.be.revertedWith("Not an admin");
         });
     });
 
@@ -112,6 +133,11 @@ describe("AuctionHouse contract workflow tests", function () {
         await expect(house.connect(user2).placeBid(0, 200))
         .to.emit(house, "BidPlaced")
         .withArgs(0, user2.address, 200);
+    });
+    it("Should not allow highest bidder to bid again", async function () {
+        await token.connect(user2).approve(house.target, 300);
+        await expect(house.connect(user2).placeBid(0, 300))
+        .to.be.revertedWith("You already have the highest bid");
     });
     it("Should not allow seller to lower the starting price once a bid has been placed", async function () {
         await expect(house.connect(user1).lowerStartingPrice(0, 20))
@@ -183,5 +209,9 @@ describe("AuctionHouse contract workflow tests", function () {
     it("Should not allow fee withdrawal if not enough fees", async function () {
         await expect(house.connect(owner).withdrawFees(100))
         .to.be.revertedWith("Amount exceeds fees");
+    });
+    it("Should not allow non-admin to withdraw fees", async function () {
+        await expect(house.connect(user2).withdrawFees(100))
+        .to.be.revertedWith("Not an admin or manager");
     });
 });
