@@ -1,15 +1,11 @@
 async function main() {
   const [deployer] = await ethers.getSigners();
-
   console.log("Deploying contracts with the account:", deployer.address);
-
   const token = await ethers.deployContract("AuctionToken");
+  console.log("Token contract address:", await token.getAddress());
 
-  console.log("Token address:", await token.getAddress());
-
-  const auction = await ethers.deployContract("Auction", [token.address]);
-
-  console.log("Auction address:", await auction.getAddress());
+  const auction = await ethers.deployContract("AuctionHouse", [token.getAddress(), deployer.address]);
+  console.log("Auction House contract address:", await auction.getAddress());
 }
 
 main()
