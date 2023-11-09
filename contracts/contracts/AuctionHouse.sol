@@ -25,7 +25,8 @@ contract AuctionHouse {
 
     mapping(uint => Auction) public auctions;
 
-    event AuctionStarted(uint auctionId, uint itemId, uint startingPrice, uint endTime);
+    event AuctionStarted(uint auctionId, uint startingPrice, uint endTime);
+    event AuctionUpdated(uint auctionId, uint newStartingPrice);
     event AuctionCancelled(uint auctionId);
     event AuctionEnded(uint auctionId, address winner, uint winningBid);
     event BidPlaced(uint auctionId, address bidder, uint amount);
@@ -77,7 +78,7 @@ contract AuctionHouse {
         });
         
         
-        emit AuctionStarted(auctionId, itemId, startingPrice, endTime);
+        emit AuctionStarted(auctionId, startingPrice, endTime);
     }
 
     function cancelAuction(uint auctionId) external auctionExists(auctionId) {
@@ -113,8 +114,9 @@ contract AuctionHouse {
         require(msg.sender == auction.seller, "You are not the seller");
         require(block.timestamp < auction.endTime, "Auction has ended");
         require(newStartingPrice < auction.currentBid, "New starting price must be lower than current bid");
-        require(auction.currentBidder == address(0), "Cannot lower starting price after a bid has been placed");
+        require(auction.currentBidder == address(0), "Bid has already been placed");
         
+        emit AuctionUpdated(auctionId, newStartingPrice);
         auction.startingPrice = newStartingPrice;
     }
 
