@@ -162,10 +162,11 @@ contract AuctionHouse {
         admin = newAdmin;
     }
 
-    function withdrawFees() external isAdminOrManager {
+    function withdrawFees(uint amount) external isAdminOrManager {
         uint fees = auctionToken.balanceOf(address(this));
-        auctionToken.transfer(admin, fees);
-        emit FeeWithdrawn(admin, fees);
+        require(amount <= fees, "Amount exceeds fees");
+        auctionToken.transfer(admin, amount);
+        emit FeeWithdrawn(admin, amount);
     }
 
     function addManager(address manager) external isAdmin {

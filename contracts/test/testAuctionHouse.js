@@ -168,9 +168,20 @@ describe("AuctionHouse contract workflow tests", function () {
         expect(await item.ownerOf(2)).to.equal(user2.address);
     });
     it("admin should be able to withdraw fees", async function () {
-        await expect(house.connect(owner).withdrawFees())
+        await expect(house.connect(owner).withdrawFees(20))
         .to.emit(house, "FeeWithdrawn")
-        .withArgs(owner.address, 35);
-        expect(await token.balanceOf(owner.address)).to.equal(35);
+        .withArgs(owner.address, 20);
+        expect(await token.balanceOf(owner.address)).to.equal(20);
+    });
+    it("manager should be able to withdraw fees", async function () {
+        await house.addManager(user1.address);
+        await expect(house.connect(user1).withdrawFees(5))
+        .to.emit(house, "FeeWithdrawn")
+        .withArgs(owner.address, 5);
+        expect(await token.balanceOf(owner.address)).to.equal(25);
+    });
+    it("Should not allow fee withdrawal if not enough fees", async function () {
+        await expect(house.connect(owner).withdrawFees(100))
+        .to.be.revertedWith("Amount exceeds fees");
     });
 });
