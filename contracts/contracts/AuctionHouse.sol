@@ -31,6 +31,7 @@ contract AuctionHouse {
     event AuctionEnded(uint auctionId, address winner, uint winningBid);
     event BidPlaced(uint auctionId, address bidder, uint amount);
     event ItemClaimed(uint auctionId);
+    event FeeWithdrawn(address to, uint amount);
 
     constructor(address _auctionToken, address initialAdmin) {
         auctionToken = IERC20(_auctionToken);
@@ -88,6 +89,9 @@ contract AuctionHouse {
         
         IERC721 auctionItem = IERC721(auction.itemContract);
         auctionItem.transferFrom(address(this), auction.seller, auction.itemId);
+        if (auction.currentBidder != address(0)) {
+            auctionToken.transfer(auction.currentBidder, auction.currentBid);    
+        }
         emit AuctionCancelled(auctionId);
         delete auctions[auctionId];
     }
@@ -141,8 +145,10 @@ contract AuctionHouse {
         require(msg.sender == auction.currentBidder, "You are not the highest bidder");
         
         IERC721 auctionItem = IERC721(auction.itemContract);
+        uint fee = (auction.currentBid * feePercentage) / 10000;
+        uint sellerProceeds = auction.currentBid - fee;
         auctionItem.transferFrom(address(this), msg.sender, auction.itemId);
-        auctionToken.transfer(auction.seller, auction.currentBid);
+        auctionToken.transfer(auction.seller, sellerProceeds);
         emit ItemClaimed(auctionId);
         delete auctions[auctionId];
     }
@@ -159,6 +165,7 @@ contract AuctionHouse {
     function withdrawFees() external isAdminOrManager {
         uint fees = auctionToken.balanceOf(address(this));
         auctionToken.transfer(admin, fees);
+        emit FeeWithdrawn(admin, fees);
     }
 
     function addManager(address manager) external isAdmin {

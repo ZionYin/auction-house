@@ -76,25 +76,31 @@ describe("AuctionHouse contract workflow tests", function () {
         await token.waitForDeployment();
         item = await ethers.deployContract("AuctionItem", [user1.address, "Test1", "TEST1"]);
         house = await ethers.deployContract("AuctionHouse", [token.target, owner.address]);
+        // token.connect(owner).mint(1000);
         token.connect(user1).mint(1000);
         token.connect(user2).mint(1000);
         token.connect(user3).mint(1000);
     });
     
     it("Should allow user to create auctions", async function () {
-        item.connect(user1).safeMint(user1.address, uri1);
-        item.connect(user1).safeMint(user1.address, uri2);
-        item.connect(user1).safeMint(user1.address, uri3);
+        await item.connect(user1).safeMint(user1.address, uri1);
+        await item.connect(user1).safeMint(user1.address, uri2);
+        await item.connect(user1).safeMint(user1.address, uri3);
         await item.connect(user1).setApprovalForAll(house.target, true);
-        await expect(house.connect(user1).startAuction(item.target, 0, 111, 10))
+        await expect(house.connect(user1).startAuction(item.target, 0, 111, 20))
         .to.emit(house, "AuctionStarted")
         .withArgs(0, 111, anyValue);
-        await expect(house.connect(user1).startAuction(item.target, 1, 222, 10))
+        await expect(house.connect(user1).startAuction(item.target, 1, 222, 20))
         .to.emit(house, "AuctionStarted")
         .withArgs(1, 222, anyValue);
-        await expect(house.connect(user1).startAuction(item.target, 2, 333, 10))
+        await expect(house.connect(user1).startAuction(item.target, 2, 333, 20))
         .to.emit(house, "AuctionStarted")
         .withArgs(2, 333, anyValue);
+    });
+    it("Should not allow user to bid with a lower amount", async function () {
+        await token.connect(user2).approve(house.target, 100);
+        await expect(house.connect(user2).placeBid(0, 100))
+        .to.be.revertedWith("Bid must be higher than the current bid");
     });
     it("Should allow seller to lower the starting price", async function () {
         await expect(house.connect(user1).lowerStartingPrice(0, 50))
@@ -112,10 +118,59 @@ describe("AuctionHouse contract workflow tests", function () {
         .to.be.revertedWith("Bid has already been placed");
     });
     it("Should allow another bidder to bid the item", async function () {
-        await token.connect(user3).approve(house.target, 300);
-        await expect(house.connect(user3).placeBid(0, 300))
+        await token.connect(user3).approve(house.target, 1000);
+        await expect(house.connect(user3).placeBid(0, 1000))
         .to.emit(house, "BidPlaced")
-        .withArgs(0, user3.address, 300);
+        .withArgs(0, user3.address, 1000);
     });
-
+    it("Should refund the previous bidder", async function () {
+        expect(await token.balanceOf(user2.address)).to.equal(1000);
+    });
+    it("Should allow seller to end the auction", async function () {
+        await expect(house.connect(user1).endAuction(0))
+        .to.emit(house, "AuctionEnded")
+        .withArgs(0, user3.address, 1000);
+    });
+    it("Should transfer the item to the winner", async function () {
+        expect(await item.ownerOf(0)).to.equal(user3.address);
+    });
+    it("Should transfer the seller proceeds to the seller", async function () {
+        expect(await token.balanceOf(user1.address)).to.equal(1975);
+    });
+    it("Should allow seller to cancel an auction", async function () {
+        await token.connect(user2).approve(house.target, 232);
+        await house.connect(user2).placeBid(1, 232);
+        await expect(house.connect(user1).cancelAuction(1))
+        .to.emit(house, "AuctionCancelled")
+        .withArgs(1);
+    });
+    it("Should refund the highest bidder", async function () {
+        expect(await token.balanceOf(user2.address)).to.equal(1000);
+    });
+    it("Should return cancelled item to the seller", async function () {
+        expect(await item.ownerOf(1)).to.equal(user1.address);
+    });
+    it("Should not allow bidder to claim the item before the auctio ends", async function () {
+        await token.connect(user2).approve(house.target, 400);
+        await house.connect(user2).placeBid(2, 400)
+        await expect(house.connect(user3).claimItem(2))
+        .to.be.revertedWith("Auction has not ended yet");
+        
+    });
+    it("Should allow bidder to claim the item once the auctio ends", async function () {
+        // sleep for 5 seconds
+        await new Promise(resolve => setTimeout(resolve, 5000));
+        await expect(house.connect(user2).claimItem(2))
+        .to.emit(house, "ItemClaimed")
+        .withArgs(2);
+    });
+    it("Should transfer the item to the winner", async function () {
+        expect(await item.ownerOf(2)).to.equal(user2.address);
+    });
+    it("admin should be able to withdraw fees", async function () {
+        await expect(house.connect(owner).withdrawFees())
+        .to.emit(house, "FeeWithdrawn")
+        .withArgs(owner.address, 35);
+        expect(await token.balanceOf(owner.address)).to.equal(35);
+    });
 });
