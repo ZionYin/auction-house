@@ -1,7 +1,19 @@
-[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-24ddc0f5d75046c5622901739e7c5dd533143b0c8e959d652212380cedb1ea36.svg)](https://classroom.github.com/a/WOVDgdbS)
-# Auction House Dapp
 
-This dApp allows users to participate in [English Auctions](https://en.wikipedia.org/wiki/English_auction).
+<br />
+<div align="center">
+
+  <h3 align="center">Auction House Dapp</h3>
+
+  <p align="center">
+    This dApp allows users to participate in [English Auctions](https://en.wikipedia.org/wiki/English_auction).
+  </p>
+</div>
+
+
+
+## About The Project
+
+![product-screenshot](./media/screenshot.png)
 
 A seller can:
 
@@ -22,30 +34,17 @@ An admin can:
 - **withdraw fees**: withdraw fees collected to admin address
 - **add/remove managers**: add/remove managers, who can set fess and withdraw fees to admin address
 
-## Criteria
 
-1. The dApp includes a frontend to show all necessary data for users to participate in Auctions and the smart contracts that facilitates the underlying logic and data storage.
-2. The smart contracts must be developed using the Tech Stack specified in the later slides.
-3. The Solidity code must be fully documented following [Natspec](https://docs.soliditylang.org/en/latest/natspec-format.html). 
-4. The smart contracts must be tested with written test cases with clear documentation. Make sure there are no security flaws and code is gas optimized.
-5. The Smart Contracts should be deployed on Sepolia network and verified on Sepolia [Etherscan](https://sepolia.etherscan.io/). Use this [Hardhat plugin](https://hardhat.org/hardhat-runner/plugins/nomicfoundation-hardhat-verify) to verify. The Etherscan links to the contracts should be added to the ReadMe.
-6. The frontend code should be Web3 focused and is an organized UI. Take design inspiration from [Opensea](https://opensea.io/).
-7. The website should be deployed to [Netlify](https://docs.netlify.com/get-started/). The URL should be in the ReadMe. 
-8. The code should be uploaded to your course repository and should include two folders: `frontend` and `contracts`.
-9. A smart contract plan should be uploaded to the repo. See the example at the end of this README file. 
+### Built With
 
-## Tech Stack 
-
-![Contract](./media/tech.png)
-
-Frontend:
+#### Frontend:
 
 - [ReactJS](https://reactjs.org/docs/getting-started.html): Frontend library to building Single Page Applications 
 - [EtherJS](https://docs.ethers.io/): JS library used for integrating with EVM
 - [Metamask](https://docs.metamask.io/guide/): A decentralized wallet used for interacting with ETH dApps. It also injects a free Infura Web3 Provider to interact with the blockchain
 - [Netlify](https://docs.netlify.com/get-started/): Platform to host website
 
-Blockchain: 
+#### Blockchain: 
 
 - [Hardhat](https://hardhat.org/hardhat-runner/docs/getting-started#overview): Framework for developing, testing and deploying Smart Contracts. Uses Mocha, Chai and Waffle
 - [Mocha](https://mochajs.org/): helps document and organize tests with "describe", "it", etc
@@ -57,14 +56,86 @@ Blockchain:
 - [Etherscan](https://etherscan.io/): Block explorer
 - [NFT Storage](https://nft.storage/) Decentralized file storage
 
-## Fund Management Example
+![Contract](./media/tech.png)
 
-> **Important:** This Fund Management example is **not related to this assignment**. It is meant to show you an example of contract specification. Your job is to create similar specifications for your Auction House dApp. 
 
-The Fund Management dApp allows people to deposit ETH into decentralized fund, and in return the fund will issue ERC20 tokens to represent the fund's shares. In other words, people can buy ERC20 tokens from the fund. The price is 1 FMD = 0.1ETH. The minimum ETH to spend to become a stakeholder is 0.1ETH.
 
-The fund manager (admin) can create new spending requests in benefit of the fund, such as paying for building new software or hiring new employees. The stakeholders can then vote on such proposals. If the minimum approval votes (75% of all tokens) have been met, the admin can execute the spending, which send the ETH to a given address.
+<!-- GETTING STARTED -->
+## Getting Started
 
-Here is the contract specification example:
+To get a local copy up and running follow these steps.
 
-![Example](./media/example.png)
+### Prerequisites
+
+* npm
+  ```sh
+  npm install npm@latest -g
+  ```
+
+### Installation
+
+1. Clone the repo
+   ```sh
+   git clone https://github.com/your_username_/Project-Name.git
+   ```
+2. Install NPM packages
+   ```sh
+   npm install
+   ```
+3. Create an .env file 
+4. Get a free INFURA API Key at [https://infura.io/](https://infura.io/)
+5. Get a free Etherscan API Key at [https://etherscan.io/](https://etherscan.io/)
+6. Get the private key of your wallet from Metamask
+7. Enter your API in `.env`
+   ```js
+    INFURA_API_KEY='ENTER YOUR API';
+    ETHERSCAN_API_KEY='ENTER YOUR API';
+    WALLET_PRIVATE_KEY='ENTER YOUR API';
+
+   ```
+
+
+<!-- USAGE EXAMPLES -->
+## Usage
+
+### Blockchain
+1. Go into the contracts folder
+   ```sh
+   cd contracts
+   ```
+
+2. To test the smart contracts, run:
+   ```sh
+   npx hardhat test
+   ```
+
+3. To deploy the smart contracts locally, run:
+   ```sh
+   npx hardhat run scripts/deploy.js
+   ```
+
+4. To deploy the smart contracts to a sepolia testnet, run:
+   ```sh
+    npx hardhat run scripts/deploy.js --network sepolia
+    ```
+
+### Frontend
+1. Go into the frontend folder
+   ```sh
+   cd frontend
+   ```
+
+2. To run the frontend, run:
+   ```sh
+    npm run dev
+   ```
+
+## Etherscan Links
+- [AuctionToken]()
+- [AuctionItem]()
+- [AuctionHouse]()
+
+
+
+
+

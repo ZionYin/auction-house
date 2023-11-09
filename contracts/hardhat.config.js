@@ -4,7 +4,7 @@ require("@nomicfoundation/hardhat-ethers");
 require("dotenv").config();
 
 const INFURA_API_KEY = process.env.INFURA_API_KEY;
-const SEPOLIA_PRIVATE_KEY = process.env.SEPOLIA_PRIVATE_KEY;
+const WALLET_PRIVATE_KEY = process.env.WALLET_PRIVATE_KEY;
 const ETHERSCAN_API_KEY = process.env.ETHERSCAN_API_KEY;
 
 module.exports = {
@@ -13,7 +13,7 @@ module.exports = {
   networks: {
     sepolia: {
       url: `https://sepolia.infura.io/v3/${INFURA_API_KEY}`,
-      accounts: [SEPOLIA_PRIVATE_KEY],
+      accounts: [WALLET_PRIVATE_KEY],
     },
   },
   etherscan: {
