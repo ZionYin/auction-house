@@ -13,9 +13,10 @@ async function main() {
 
   if (network.name === "sepolia") {
     console.log("Waiting for block confirmations...");
-    await auction.deploymentTransaction().wait(3);
+    await auction.deploymentTransaction().wait(5);
 
     console.log("Verifying contracts on etherscan...");
+
     await hre.run("verify:verify", {
       address: token.target,
       constructorArguments: [],
