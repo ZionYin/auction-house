@@ -15,7 +15,7 @@ import { NFTStorage } from "nft.storage";
 const NFT_STORAGE_API_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweEI0MDM3MDBGNmY5ODI3MzQxNTYyNzI3OWY5QjFFYjE3ZkU4ZjIyMmUiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTY5OTc0MjU3MTgzMiwibmFtZSI6IkEyIn0.Z9RgDWec-pMqRbDHalFECvgeC_aUVPEVylmaHzU_TEY";
 
 
-export function MintItemComponent({ contractAddress }) {
+export function AuctionItemComponent({ contractAddress }) {
 
     const [file, setFile] = useState(null);
     const [inputAddress, setInputAddress] = useState("");
