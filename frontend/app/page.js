@@ -1,3 +1,5 @@
+"use client";
+
 import { Inter } from "next/font/google";
 import { MetaMaskUIProvider, MetaMaskButton } from "@metamask/sdk-react-ui";
 import { ethers } from "ethers";
@@ -72,7 +74,7 @@ export default function Home() {
       >
         <h1 className="text-4xl font-bold text-center">test</h1>
         <div>
-          <MetaMaskButton></MetaMaskButton>
+          <MetaMaskButton />
         </div>
         <button onClick={test}>test</button>
         <div className="form-group">
