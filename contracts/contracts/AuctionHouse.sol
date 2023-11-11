@@ -162,6 +162,10 @@ contract AuctionHouse {
         admin = newAdmin;
     }
 
+    function getFees() external view returns (uint) {
+        return auctionToken.balanceOf(address(this));
+    }
+
     function withdrawFees(uint amount) external isAdminOrManager {
         uint fees = auctionToken.balanceOf(address(this));
         require(amount <= fees, "Amount exceeds fees");

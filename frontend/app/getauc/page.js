@@ -11,15 +11,9 @@ import {
 } from "@/interact.js";
 import { useState, useEffect } from "react";
 
+
 export default function getAUC() {
   const [mintAmount, setMintAmount] = useState(0);
-  const [isConnected, setIsConnected] = useState(false);
-
-  useEffect(() => {
-    if (window.ethereum) {
-      setIsConnected(true);
-    }
-  });
 
   const handleMintToken = async () => {
     const provider = new ethers.BrowserProvider(window.ethereum);
@@ -30,8 +24,6 @@ export default function getAUC() {
   };
 
   const test = async () => {
-    console.log("ether connected", window.ethereum.isConnected());
-
     const provider = new ethers.BrowserProvider(window.ethereum);
     const signer = provider.getSigner();
     console.log("tokenAddress", tokenAddress);
@@ -43,9 +35,13 @@ export default function getAUC() {
     const name = await tokenContract.name();
 
     console.log("name", name);
+
   };
 
+
+
   return (
+    <main className={`flex min-h-screen flex-col items-center justify-between p-24`}>
         <div className="form-group">
         <label htmlFor="mintAmount">mint amount</label>
         <input
@@ -56,5 +52,6 @@ export default function getAUC() {
         />
         <button onClick={handleMintToken}>mint</button>
         </div>
+    </main>
   );
 }
