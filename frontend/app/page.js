@@ -1,7 +1,7 @@
 "use client";
 
 import { Inter } from "next/font/google";
-import { MetaMaskUIProvider, MetaMaskButton } from "@metamask/sdk-react-ui";
+import { MetaMaskButton } from "@metamask/sdk-react-ui";
 import { ethers } from "ethers";
 import {
   tokenABI,
@@ -10,8 +10,9 @@ import {
   tokenAddress,
   houseAddress,
   itemBytecode,
-} from "../interact.js";
+} from "@/interact.js";
 import { useState, useEffect } from "react";
+import Link from "next/link";
 import { NFTStorage } from 'nft.storage'
 
 const inter = Inter({ subsets: ["latin"] });
@@ -27,8 +28,9 @@ export default function Home() {
   });
 
   const handleMintToken = async () => {
+    console.log("mintAmount", mintAmount);
     const provider = new ethers.BrowserProvider(window.ethereum);
-    const signer = provider.getSigner();
+    const signer = await provider.getSigner();
     const tokenContract = new ethers.Contract(tokenAddress, tokenABI, signer);
     const tx = await tokenContract.mint(mintAmount);
     await tx.wait();
@@ -49,7 +51,7 @@ export default function Home() {
     console.log("ether connected", window.ethereum.isConnected());
 
     const provider = new ethers.BrowserProvider(window.ethereum);
-    const signer = provider.getSigner();
+    const signer = await provider.getSigner();
     console.log("tokenAddress", tokenAddress);
     console.log("tokenABI", tokenABI);
     console.log("signer", signer);
@@ -62,13 +64,7 @@ export default function Home() {
   };
 
   return (
-    <MetaMaskUIProvider
-      sdkOptions={{
-        dappMetadata: {
-          name: "My dapp",
-        },
-      }}
-    >
+    
       <main
         className={`flex min-h-screen flex-col items-center justify-between p-24 ${inter.className}`}
       >
@@ -76,7 +72,8 @@ export default function Home() {
         <div>
           <MetaMaskButton />
         </div>
-        <button onClick={test}>test</button>
+        <button onClick={test} className="btn btn-primary">test</button>
+        <Link href="/getauc">getauc</Link>
         <div className="form-group">
           <label htmlFor="mintAmount">mint amount</label>
           <input
@@ -89,6 +86,5 @@ export default function Home() {
           <button onClick={handleCreateItemContract}>create item contract</button>
         </div>
       </main>
-    </MetaMaskUIProvider>
   );
 }
