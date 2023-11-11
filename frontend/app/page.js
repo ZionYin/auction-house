@@ -81,6 +81,7 @@ export default function Home() {
       <br />
       <Link href="/getauc">getauc</Link>
       <Link href="/admin">admin</Link>
+      <Link href="/create">create</Link>
       <br />
 
       <button onClick={handleCreateItemContract}>create item contract</button>
