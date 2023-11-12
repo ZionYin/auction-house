@@ -1,7 +1,5 @@
 "use client";
 
-import { DeployContractComponent } from "@/app/components/DeployContractComponent.js";
-import { MintItemComponent } from "@/app/components/MintItemComponent.js";
 import { useState, useEffect } from "react";
 import { CreateAuctionComponent } from "../components/CreateAuctionComponent";
 

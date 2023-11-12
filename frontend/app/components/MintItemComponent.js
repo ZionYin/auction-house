@@ -15,23 +15,33 @@ import { NFTStorage } from "nft.storage";
 const NFT_STORAGE_API_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweEI0MDM3MDBGNmY5ODI3MzQxNTYyNzI3OWY5QjFFYjE3ZkU4ZjIyMmUiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTY5OTc0MjU3MTgzMiwibmFtZSI6IkEyIn0.Z9RgDWec-pMqRbDHalFECvgeC_aUVPEVylmaHzU_TEY";
 
 
-export function MintItemComponent({ contractAddress }) {
+export function MintItemComponent({ contractAddress, parentCallbackSetId }) {
 
     const [file, setFile] = useState(null);
     const [inputAddress, setInputAddress] = useState("");
+
+
+  const addListener = async () => {
+    const provider = new ethers.BrowserProvider(window.ethereum);
+    const signer = await provider.getSigner();
+    const itemContract = new ethers.Contract(inputAddress?inputAddress:contractAddress, itemABI, signer);
+    itemContract.once("ItemMinted", (to, tokenId) => {
+      parentCallbackSetId(tokenId);
+    }
+    );
+  };
 
   const handleMintItem = async () => {
     const provider = new ethers.BrowserProvider(window.ethereum);
     const signer = await provider.getSigner();
     const itemContract = new ethers.Contract(inputAddress?inputAddress:contractAddress, itemABI, signer);
     const nftStorage = new NFTStorage({ token: NFT_STORAGE_API_KEY });
-    console.log("key", NFT_STORAGE_API_KEY)
     const metadata = await nftStorage.store({
       name: "test",
       description: "test",
       image: file,
     });
-    console.log("metadata", metadata);
+    await addListener();
     const tx = await itemContract.safeMint(await signer.getAddress(), metadata.url);
     await tx.wait();
   };
@@ -41,7 +51,7 @@ export function MintItemComponent({ contractAddress }) {
         <div>Contract Address(Be sure to save it!!!)</div>
         <input
               type="text"
-              placeholder={contractAddress}
+              defaultValue={contractAddress}
               className="input input-bordered w-full max-w-xs"
               onInput={(e) => setInputAddress(e.target.value)}
             />
@@ -58,6 +68,7 @@ export function MintItemComponent({ contractAddress }) {
         Mint Item
       </button>
       </div>
+      <button onClick={addListener}>Add Listener</button>
       
     </div>
   );

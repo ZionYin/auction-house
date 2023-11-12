@@ -11,7 +11,7 @@ import {
 } from "@/interact.js";
 import { useState, useEffect } from "react";
 
-export function DeployContractComponent({parentCallback}) {
+export function DeployContractComponent({parentCallbackSetAddress}) {
   const [contractName, setContractName] = useState("");
   const [contractSymbol, setContractSymbol] = useState("");
   const [contractAddress, setContractAddress] = useState("");
@@ -33,7 +33,7 @@ export function DeployContractComponent({parentCallback}) {
     const address = await itemContract.getAddress();
     console.log("itemContract", address);
     setContractAddress(address);
-    parentCallback(address);
+    parentCallbackSetAddress(address);
   };
 
   return (
