@@ -20,7 +20,6 @@ export default function create() {
       className={`flex min-h-screen flex-col items-center p-24`}
     >
         <DeployContractComponent parentCallback={handleCallback}/>
-        <div>{contractAddress}test</div>
         <MintItemComponent contractAddress={contractAddress}/>
     </main>
   );
