@@ -29,6 +29,7 @@ export default function Home() {
       <Link href="/admin">admin</Link>
       <Link href="/create">create</Link>
       <Link href="/auction">auction</Link>
+      <Link href="/bid">bid</Link>
       <br />
 
     </main>

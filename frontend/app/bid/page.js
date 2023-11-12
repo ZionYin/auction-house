@@ -2,20 +2,13 @@
 
 import { useState, useEffect } from "react";
 import { CreateAuctionComponent } from "../components/CreateAuctionComponent";
+import { ItemCard } from "../components/ItemCard";
 
 
 
-export default function create() {
-  const [contractAddress, setContractAddress] = useState("");
-  const [itemId, setItemId] = useState("");
-
-  const handleCallbackSetAddress = (contractAddress) => {
-    setContractAddress(contractAddress);
-  };
-
-  const handleCallbackSetId = (itemId) => {
-    setItemId(itemId);
-  }
+export default function bid() {
+  
+  
 
   
 
@@ -23,9 +16,8 @@ export default function create() {
     <main
       className={`flex min-h-screen flex-col items-center p-24`}
     >
-        <DeployContractComponent parentCallbackSetAddress={handleCallbackSetAddress}/>
-        <MintItemComponent parentCallbackSetId={handleCallbackSetId} contractAddress={contractAddress}/>
-        <CreateAuctionComponent contractAddress={contractAddress} itemId={itemId}/>
+        <ItemCard item={{name:"test", description:"test"}}/>
+
     </main>
   );
 }
