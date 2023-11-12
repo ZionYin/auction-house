@@ -1,19 +1,15 @@
 
-<br />
-<div align="center">
 
-  <h3 align="center">Auction House Dapp</h3>
+# Auction Hosue
 
-  <p align="center">
-    This dApp allows users to participate in [English Auctions](https://en.wikipedia.org/wiki/English_auction).
-  </p>
-</div>
-
+[demo](https://auction-house-zion.netlify.app/)
 
 
 ## About The Project
 
 ![product-screenshot](./media/screenshot.png)
+
+This dApp allows users to participate in [English Auctions](https://en.wikipedia.org/wiki/English_auction).
 
 A seller can:
 
