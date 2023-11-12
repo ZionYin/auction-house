@@ -7,7 +7,7 @@ import { CreateAuctionComponent } from "../components/CreateAuctionComponent";
 
 
 
-export default function create() {
+export default function Create() {
   const [contractAddress, setContractAddress] = useState("");
   const [itemId, setItemId] = useState("");
 

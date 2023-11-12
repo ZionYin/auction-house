@@ -11,7 +11,7 @@ import {
 } from "@/interact.js";
 import { useState, useEffect } from "react";
 
-export default function admin() {
+export function AdminComponent() {
   const [houseContract, setHouseContract] = useState(null);
   const [feePercentage, setfeePercentage] = useState(0);
   const [admin, setAdmin] = useState("");

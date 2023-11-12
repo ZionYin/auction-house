@@ -12,7 +12,7 @@ import {
 import { useState, useEffect } from "react";
 
 
-export default function getAUC() {
+export default function GetAUC() {
   const [mintAmount, setMintAmount] = useState(0);
 
   const handleMintToken = async () => {
