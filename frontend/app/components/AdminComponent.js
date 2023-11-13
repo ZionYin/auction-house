@@ -13,6 +13,7 @@ import { useState, useEffect } from "react";
 
 export function AdminComponent() {
   const [admin, setAdmin] = useState("");
+  const [newAdmin, setNewAdmin] = useState("");
   const [managers, setManagers] = useState([]);
 
   useEffect(() => {
@@ -36,11 +37,15 @@ export function AdminComponent() {
     console.log(managers);
   };
 
+  const handleChangeAdmin = async () => {
+    const provider = new ethers.BrowserProvider(window.ethereum);
+    const signer = await provider.getSigner();
+    const houseContract = new ethers.Contract(houseAddress, houseABI, signer);
+    const tx = await houseContract.changeAdmin(newAdmin);
+    await tx.wait();
+  }
+
   return (
-    // show current admin and managers
-    // allow admin to change admin
-    // allow admin to add manager
-    // allow admin to remove manager
 
     <div>
       <div className="stats shadow">
@@ -61,10 +66,10 @@ export function AdminComponent() {
               type="text"
               placeholder="New admin"
               className="input input-bordered"
-              onChange={(e) => setAdmin(e.target.value)}
+              onChange={(e) => setNewAdmin(e.target.value)}
             />
           </div>
-          <button className="btn btn-primary" onClick={test}>
+          <button className="btn btn-primary" onClick={handleChangeAdmin}>
             Change admin
           </button>
         </div>
