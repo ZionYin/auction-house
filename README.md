@@ -131,6 +131,10 @@ To get a local copy up and running follow these steps.
 - [AuctionItem]()
 - [AuctionHouse]()
 
+## tech plan
+![tech plan page1](./media/tech_plan_page_1.jpg)
+![tech plan page2](./media/tech_plan_page_2.jpg)
+
 
 
 
