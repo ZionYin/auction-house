@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { CreateAuctionComponent } from "../components/CreateAuctionComponent";
 import { ItemCard } from "../components/ItemCard";
 
 
