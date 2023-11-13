@@ -12,99 +12,63 @@ import {
 import { useState, useEffect } from "react";
 
 export function AdminComponent() {
-  const [houseContract, setHouseContract] = useState(null);
-  const [feePercentage, setfeePercentage] = useState(0);
   const [admin, setAdmin] = useState("");
   const [managers, setManagers] = useState([]);
-  const [fees] = useState(0);
-  const [withdrawalAmount, setWithdrawalAmount] = useState(0);
 
   useEffect(() => {
     const getData = async () => {
       const provider = new ethers.BrowserProvider(window.ethereum);
       const signer = await provider.getSigner();
       const houseContract = new ethers.Contract(houseAddress, houseABI, signer);
-      setHouseContract(houseContract);
-      const feePercentage = await houseContract.feePercentage();
       const admin = await houseContract.admin();
-      // const managers = await houseContract.managers();
-      // const fees = await houseContract.getFees();
-      return { feePercentage, admin };
+      // const managers = await houseContract.managers(0);
+      return { admin, managers };
     };
 
     getData().then((data) => {
-      setfeePercentage(data.feePercentage);
       setAdmin(data.admin);
-      setManagers(data.managers);
+      // setManagers(data.managers);
     });
   }, []);
 
-  const handleChangefeePercentage = async () => {
-    const tx = await houseContract.setFeePercentage(feePercentage);
-    await tx.wait();
-  };
-
-  const handleWithdrawFees = async () => {
-    const tx = await houseContract.withdrawFees(withdrawalAmount);
-    await tx.wait();
-  }
-
   const test = async () => {
-    console.log("feePercentage", feePercentage);
-    // const provider = new ethers.BrowserProvider(window.ethereum);
-    // const signer = await provider.getSigner();
-    // const houseContract = new ethers.Contract(houseAddress, houseABI, signer);
-
-    // console.log("houseContract", houseContract);
-
-    // const feePercentage = await houseContract.feePercentagePercentage();
-    // console.log("feePercentage", feePercentage);
+    console.log(admin);
+    console.log(managers);
   };
 
   return (
-    <main
-      className={`flex min-h-screen flex-col items-center justify-between p-24`}
-    >
+    // show current admin and managers
+    // allow admin to change admin
+    // allow admin to add manager
+    // allow admin to remove manager
+
+    <div>
       <div className="stats shadow">
         <div className="stats bg-primary text-primary-content">
           <div className="stat">
-            <div className="stat-title">Current feePercentage</div>
-            <div >
-            <input
-              type="text"
-              placeholder={feePercentage}
-              className="input input-bordered w-2/6 max-w-xs"
-              onInput={(e) => setfeePercentage(e.target.value)}
-            />
-            <span>/10000</span>
-
-            </div>
-            
-            <div className="stat-actions">
-              <button
-                className="btn btn-sm btn-success"
-                onClick={handleChangefeePercentage}
-              >
-                Change fee Percentage
-              </button>
-            </div>
-          </div>
-
-          <div className="stat">
-            <div className="stat-title">Current balance</div>
-            <div className="stat-value">{fees} AUC</div>
-            <input
-              type="text"
-              placeholder={fees}
-              className="input input-bordered w-full max-w-xs"
-              onInput={(e) => setWithdrawalAmount(e.target.value)}
-            />
-            <div className="stat-actions">
-              <button className="btn btn-sm" onClick={handleWithdrawFees}>Withdrawal</button>
-            </div>
+            <div className="stat-title">Current admin</div>
+            <div className="stat-value">{admin}</div>
           </div>
         </div>
       </div>
-    </main>
+      <div className="card shadow-lg compact side bg-base-100">
+        <div className="card-body">
+          <div className="form-control">
+            <label className="label">
+              <span className="label-text">New admin</span>
+            </label>
+            <input
+              type="text"
+              placeholder="New admin"
+              className="input input-bordered"
+              onChange={(e) => setAdmin(e.target.value)}
+            />
+          </div>
+          <button className="btn btn-primary" onClick={test}>
+            Change admin
+          </button>
+        </div>
+      </div>
+    </div>
   );
 }

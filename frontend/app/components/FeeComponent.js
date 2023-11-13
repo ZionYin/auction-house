@@ -50,9 +50,7 @@ export function FeeComponent() {
   }
 
   return (
-    <main
-      className={`flex min-h-screen flex-col items-center justify-between p-24`}
-    >
+    <div    >
       <div className="stats shadow">
         <div className="stats bg-primary text-primary-content">
           <div className="stat">
@@ -93,6 +91,6 @@ export function FeeComponent() {
           </div>
         </div>
       </div>
-    </main>
+    </div>
   );
 }
