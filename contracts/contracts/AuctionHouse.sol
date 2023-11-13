@@ -146,11 +146,30 @@ contract AuctionHouse {
         uint sellerProceeds = winningBid - fee;
         
         IERC721 auctionItem = IERC721(auction.itemContract);
-        auctionItem.transferFrom(address(this), winner, auction.itemId);
-        auctionToken.transfer(auction.seller, sellerProceeds);
+
+        if(winner != address(0)) { // Bid was placed
+            auctionItem.transferFrom(address(this), winner, auction.itemId);
+            auctionToken.transfer(auction.seller, sellerProceeds);
+            emit AuctionEnded(auctionId, winner, winningBid);
+        } else { // No bid was placed
+            auctionItem.transferFrom(address(this), auction.seller, auction.itemId);
+            emit AuctionEnded(auctionId, address(this), 0);
+        }
+
+
+        // auctionItem.transferFrom(address(this), winner, auction.itemId);
+        // auctionToken.transfer(auction.seller, sellerProceeds);
         
-        emit AuctionEnded(auctionId, winner, winningBid);
+        // emit AuctionEnded(auctionId, winner, winningBid);
         delete auctions[auctionId];
+    }
+
+    function getAuctions() external view returns (Auction[] memory) {
+        Auction[] memory _auctions = new Auction[](_nextAuctionId);
+        for (uint i = 0; i < _nextAuctionId; i++) {
+            _auctions[i] = auctions[i];
+        }
+        return _auctions;
     }
 
     ///@notice Lower the starting price of an auction
