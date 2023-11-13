@@ -164,12 +164,31 @@ contract AuctionHouse {
         delete auctions[auctionId];
     }
 
+    /// @notice Get all auctions
+    /// @return An array of all auctions
+    /// @dev This function is created because the built-in getter is a pain to work with
     function getAuctions() external view returns (Auction[] memory) {
         Auction[] memory _auctions = new Auction[](_nextAuctionId);
         for (uint i = 0; i < _nextAuctionId; i++) {
             _auctions[i] = auctions[i];
         }
         return _auctions;
+    }
+
+    function getAuctionsBySeller (address seller) external view returns (Auction[] memory) {
+        Auction[] memory _auctions = new Auction[](_nextAuctionId);
+        uint count = 0;
+        for (uint i = 0; i < _nextAuctionId; i++) {
+            if (auctions[i].seller == seller) {
+                _auctions[count] = auctions[i];
+                count++;
+            }
+        }
+        Auction[] memory _auctionsBySeller = new Auction[](count);
+        for (uint i = 0; i < count; i++) {
+            _auctionsBySeller[i] = _auctions[i];
+        }
+        return _auctionsBySeller;           
     }
 
     ///@notice Lower the starting price of an auction

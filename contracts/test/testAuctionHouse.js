@@ -120,7 +120,6 @@ describe("AuctionHouse contract workflow tests", function () {
     });
     it("Should show the correct auction details", async function () {
         const results = await house.getAuctions();
-        console.log(results);
         expect(results.length).to.equal(3);
         expect(results[0][2]).to.equal(0);
         expect(results[0][3]).to.equal(111);
