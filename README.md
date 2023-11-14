@@ -127,13 +127,22 @@ To get a local copy up and running follow these steps.
    ```
 
 ## Etherscan Links
-- [AuctionToken]()
-- [AuctionItem]()
-- [AuctionHouse]()
+- [AuctionToken](https://sepolia.etherscan.io/address/0x62f006D7c47C2C3aDd0FB6FF71C17A597E8bc05b#code)
+- [AuctionHouse](https://sepolia.etherscan.io/address/0xFd51E6A9D87Dd55c84b04dF64fa4f0A38dD036d1#code)
 
 ## tech plan
 ![tech plan page1](./media/tech_plan_page_1.jpg)
 ![tech plan page2](./media/tech_plan_page_2.jpg)
+
+## milestones
+~~MVP~~
+~~100% function coverage~~
+100% statement coverage
+smoothen UI
+add more tests
+add more features
+
+
 
 
 
