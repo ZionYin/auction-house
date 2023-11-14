@@ -7,8 +7,6 @@
 
 ## About The Project
 
-![product-screenshot](./media/screenshot.png)
-
 This dApp allows users to participate in [English Auctions](https://en.wikipedia.org/wiki/English_auction).
 
 A seller can:
@@ -131,8 +129,7 @@ To get a local copy up and running follow these steps.
 - [AuctionHouse](https://sepolia.etherscan.io/address/0xFd51E6A9D87Dd55c84b04dF64fa4f0A38dD036d1#code)
 
 ## tech plan
-![tech plan page1](./media/tech_plan_page_1.jpg)
-![tech plan page2](./media/tech_plan_page_2.jpg)
+![tech plan page](./media/plan.png)
 
 ## milestones
 ~~MVP~~

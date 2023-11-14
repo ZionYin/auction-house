@@ -177,6 +177,8 @@ contract AuctionHouse {
         return _auctions;
     }
 
+    /// @param seller The address of the seller
+    /// @return An array of auctions by the seller
     function getAuctionsBySeller (address seller) external view returns (Auction[] memory) {
         Auction[] memory _auctions = new Auction[](_nextAuctionId);
         uint count = 0;

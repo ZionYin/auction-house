@@ -32,6 +32,8 @@
 | addManager | manager: address | add a manager to the auction house |
 | removeManager | manager: address | remove a manager from the auction house |
 | isManager | manager: address | check if the address is a manager of the auction house |
+| getAuctions | | get all the auctions in the auction house |
+| getAuctionsBySeller | seller: address | get all the auctions of a seller |
 
 | Events | | |
 | ------ | ------- | -------------------------------------------------------- |
