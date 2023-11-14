@@ -72,6 +72,11 @@ describe("AuctionHouse contract unit tests", function () {
             await expect(house.connect(user1).removeManager(user2.address))
             .to.be.revertedWith("Not an admin");
         });
+        it("Should show the correct managers", async function () {
+            const { house, owner, user1, user2 } = await loadFixture(deployFixture);
+            await house.addManager(user1.address);
+            expect((await house.getManagers())[0]).to.equal(user1.address);
+        });
         it("Should allow admin to change admin", async function () {
             const { house, owner, user1 } = await loadFixture(deployFixture);
             await house.changeAdmin(user1.address);

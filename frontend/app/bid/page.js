@@ -12,7 +12,7 @@ import {
 } from "@/interact.js";
 import { ethers } from "ethers";
 
-export default function bid() {
+export default function Bid() {
 
   const [auctions, setAuctions] = useState([]);
 

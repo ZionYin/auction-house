@@ -2,8 +2,8 @@ import token from './abi/AuctionToken.sol/AuctionToken.json'
 import item from './abi/AuctionItem.sol/AuctionItem.json'
 import house from './abi/AuctionHouse.sol/AuctionHouse.json'
 
-export const tokenAddress = '0x62f006D7c47C2C3aDd0FB6FF71C17A597E8bc05b'
-export const houseAddress = '0xFd51E6A9D87Dd55c84b04dF64fa4f0A38dD036d1'
+export const tokenAddress = '0xC300eF49E8047E76F2a1095A3201896735Ce6c52'
+export const houseAddress = '0xf20e9ed7b439FA97FC6313D3A86c95AebDC4D6Fd'
 export const tokenABI = token.abi
 export const itemABI = item.abi
 export const houseABI = house.abi

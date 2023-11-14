@@ -13,7 +13,7 @@ import { useState, useEffect } from "react";
 import { FeeComponent } from "@/app/components/FeeComponent.js";
 import { AdminComponent } from "@/app/components/AdminComponent.js";
 
-export default function admin() {
+export default function Admin() {
   
 
   return (

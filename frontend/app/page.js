@@ -1,6 +1,5 @@
 "use client";
 
-import { MetaMaskButton } from "@metamask/sdk-react-ui";
 import { ethers } from "ethers";
 import {
   tokenABI,
@@ -19,19 +18,12 @@ export default function Home() {
  
 
   return (
-    <main className={`flex min-h-screen flex-col items-center justify-between p-24`}>
-      <h1 className="text-4xl font-bold text-center">test</h1>
-      <div>
-        <MetaMaskButton />
-      </div>
-      <br />
-      <Link href="/getauc">getauc</Link>
-      <Link href="/admin">admin</Link>
-      <Link href="/create">create</Link>
-      <Link href="/bid">bid</Link>
-      <Link href="/myauctions">myauctions</Link>
-      <br />
+    <main className={`flex min-h-screen flex-col items-center justify-between p-24 `}>
+      <Link href="/getauc" className={`text-xl font-bold hover:underline transition duration-300`}>Get free AUC!</Link>
+      <Link href="/create" className={`text-xl font-bold hover:underline transition duration-300`}>✨ Create Auction</Link>
+      <Link href="/bid" className={`text-xl font-bold hover:underline transition duration-300`}> Place a Bid</Link>
+      <Link href="/myauctions" className={`text-xl font-bold hover:underline transition duration-300`}> My Auctions</Link>
+</main>
 
-    </main>
   );
 }

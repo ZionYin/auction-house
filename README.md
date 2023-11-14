@@ -125,8 +125,8 @@ To get a local copy up and running follow these steps.
    ```
 
 ## Etherscan Links
-- [AuctionToken](https://sepolia.etherscan.io/address/0x62f006D7c47C2C3aDd0FB6FF71C17A597E8bc05b#code)
-- [AuctionHouse](https://sepolia.etherscan.io/address/0xFd51E6A9D87Dd55c84b04dF64fa4f0A38dD036d1#code)
+- [AuctionToken](https://sepolia.etherscan.io/address/0xC300eF49E8047E76F2a1095A3201896735Ce6c52#code)
+- [AuctionHouse](https://sepolia.etherscan.io/address/0xf20e9ed7b439FA97FC6313D3A86c95AebDC4D6Fd#code)
 
 ## tech plan
 ![tech plan page](./media/plan.png)

@@ -301,5 +301,9 @@ contract AuctionHouse {
         }
         return false;
     }
+
+    function getManagers() external view returns (address[] memory) {
+        return managers;
+    }
     
 }
