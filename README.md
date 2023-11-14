@@ -119,7 +119,15 @@ To get a local copy up and running follow these steps.
    cd frontend
    ```
 
-2. To run the frontend, run:
+2. Copy the ABI files from the artifacts folder into the frontend/abi folder
+   ```sh
+   cp -r ../contracts/artifacts/contracts/* ./abi
+   ```
+
+3. In ./interact.js, set up contract addresses copied from the output in CLI after running the deploy script
+
+
+4. To run the development server, run:
    ```sh
     npm run dev
    ```
