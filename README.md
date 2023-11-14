@@ -140,12 +140,12 @@ To get a local copy up and running follow these steps.
 ![tech plan page](./media/plan.png)
 
 ## milestones
-~~MVP~~
-~~100% function coverage~~
-100% statement coverage
-smoothen UI
-add more tests
-add more features
+- ~~MVP~~
+- ~~100% function coverage~~
+- 100% statement coverage
+- smoothen UI
+- add more tests
+- add more features
 
 
 
