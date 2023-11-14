@@ -9,9 +9,10 @@ import {IERC721} from "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 /// @notice You can use this contract to sell and bid on NFTs using ERC-20 tokens
 contract AuctionHouse {
 
-    uint private _nextAuctionId;
+    uint private _nextAuctionId = 0;
 
     struct Auction {
+        uint auctionId;
         address seller;
         address itemContract;
         uint itemId;
@@ -105,6 +106,7 @@ contract AuctionHouse {
         uint endTime = block.timestamp + duration;
         
         auctions[auctionId] = Auction({
+            auctionId: auctionId,
             seller: tx.origin,
             itemContract: itemContract,
             itemId: itemId,
@@ -153,7 +155,7 @@ contract AuctionHouse {
             emit AuctionEnded(auctionId, winner, winningBid);
         } else { // No bid was placed
             auctionItem.transferFrom(address(this), auction.seller, auction.itemId);
-            emit AuctionEnded(auctionId, address(this), 0);
+            emit AuctionEnded(auctionId, auction.seller, 0);
         }
 
 

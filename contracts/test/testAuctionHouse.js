@@ -121,10 +121,16 @@ describe("AuctionHouse contract workflow tests", function () {
     it("Should show the correct auction details", async function () {
         const results = await house.getAuctions();
         expect(results.length).to.equal(3);
-        expect(results[0][2]).to.equal(0);
-        expect(results[0][3]).to.equal(111);
-        expect(results[0][5]).to.equal(111);
-        expect(results[0][6]).to.equal("0x0000000000000000000000000000000000000000");
+        expect(results[0][0]).to.equal(0); // auction id
+        expect(results[0][3]).to.equal(0); // item id
+        expect(results[0][4]).to.equal(111); // starting price
+        expect(results[0][6]).to.equal(111); // current bid
+        expect(results[0][7]).to.equal("0x0000000000000000000000000000000000000000"); // current bidder
+    });
+    it("Should show the correct auction details", async function () {
+        const results = await house.getAuctionsBySeller(user1.address);
+        expect(results.length).to.equal(3);
+        expect(results[0][0]).to.equal(0); // auction id
     });
     it("Should not allow user to bid with a lower amount", async function () {
         await token.connect(user2).approve(house.target, 100);
@@ -224,5 +230,14 @@ describe("AuctionHouse contract workflow tests", function () {
     it("Should not allow non-admin to withdraw fees", async function () {
         await expect(house.connect(user2).withdrawFees(100))
         .to.be.revertedWith("Not an admin or manager");
+    });
+    it("Should return item to seller if auction is ended by seller given that there is no bid", async function () {
+        await item.connect(user1).safeMint(user1.address, uri1);
+        await item.connect(user1).setApprovalForAll(house.target, true);
+        await house.connect(user1).startAuction(item.target, 3, 100, 20);
+        await expect(house.connect(user1).endAuction(3))
+        .to.emit(house, "AuctionEnded")
+        .withArgs(3, user1.address, 0);
+        expect(await item.ownerOf(3)).to.equal(user1.address);
     });
 });

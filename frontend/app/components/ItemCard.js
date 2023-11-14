@@ -42,6 +42,10 @@ export function ItemCard({ item }) {
       <div className="card-body">
         <h2 className="card-title">Current Bid</h2>
         <p className="text-gray-700 text-sm">{item.currentBid.toString()}</p>
+        <h2 className="card-title">Auction ID</h2>
+        <p className="text-gray-700 text-sm">{item.key.toString()}</p>
+        <h2 className="card-title">Auction End Time</h2>
+        <p className="text-gray-700 text-sm">{item.endTime.toString()}</p>
         <div className="card-actions">
           <input
             type="number"

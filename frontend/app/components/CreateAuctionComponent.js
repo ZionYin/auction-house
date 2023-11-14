@@ -21,7 +21,7 @@ export function CreateAuctionComponent({ contractAddress, itemId }) {
     }, [contractAddress, itemId]);
 
     const [inputAddress, setInputAddress] = useState(contractAddress?contractAddress:"");
-    const [inputId, setInputId] = useState(itemId?itemId:0);
+    const [inputId, setInputId] = useState(itemId?itemId:"0");
     const [price, setPrice] = useState(0);
     const [duration, setDuration] = useState(0);
 
@@ -60,8 +60,8 @@ export function CreateAuctionComponent({ contractAddress, itemId }) {
             />
         <div>item ID</div>
         <input
-              type="number"
-              defaultValue={itemId}
+              type="text"
+              defaultValue={itemId.toString()}
               className="input input-bordered w-full max-w-xs"
               onInput={(e) => setInputId(e.target.value)}
             />

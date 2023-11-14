@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { ItemCard } from "../components/ItemCard";
+import { ItemCardSeller } from "@/app/components/ItemCardSeller.js";
 import {
   tokenABI,
   itemABI,
@@ -20,7 +20,7 @@ export default function bid() {
     const provider = new ethers.BrowserProvider(window.ethereum);
     const signer = await provider.getSigner();
     const houseContract = new ethers.Contract(houseAddress, houseABI, signer);
-    const auctions = await houseContract.getAuctions();
+    const auctions = await houseContract.getAuctionsBySeller(await signer.getAddress());
     return auctions;
   }
 
@@ -52,7 +52,7 @@ export default function bid() {
       <button className="btn btn-primary" onClick={handleFetchAuctions}>Get Auctions</button>
       <div className="flex justify-center flex-col">
         {auctions.map((item) => (
-          <ItemCard item={item} key={item.key} />
+          <ItemCardSeller item={item} key={item.key} />
         ))}
       </div>
     </main>
